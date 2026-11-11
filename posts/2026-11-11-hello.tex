@@ -1,0 +1,55 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{hyperref}
+
+\title{Hello, World}
+\date{2026-11-11}
+
+\begin{document}
+\maketitle
+
+This is the first post. It is written in \LaTeX{} and converted to HTML
+with Pandoc at build time. Math is emitted as MathML, so the page needs
+no JavaScript.
+
+\section{Inline and display math}
+
+Euler's identity, $e^{i\pi} + 1 = 0$, fits inline. Display math gets its
+own block:
+\[
+  \int_0^\infty e^{-x^2}\,dx = \frac{\sqrt{\pi}}{2}
+\]
+Aligned equations work too:
+\begin{align}
+  a^2 + b^2 &= c^2 \\
+  \nabla \cdot \mathbf{E} &= \frac{\rho}{\varepsilon_0}
+\end{align}
+
+\section{Ordinary prose}
+
+Lists:
+\begin{itemize}
+  \item \emph{Emphasis} and \textbf{bold}.
+  \item Inline \texttt{code}.
+  \item A link to \href{https://pandoc.org}{Pandoc}.
+\end{itemize}
+
+Numbered:
+\begin{enumerate}
+  \item Write a \texttt{.tex} file in \texttt{posts/}.
+  \item Push.
+\end{enumerate}
+
+Footnotes render as endnotes.\footnote{Like this one.}
+
+\begin{quote}
+  Block quotes are fine as well.
+\end{quote}
+
+\subsection{What does not work}
+
+TikZ, pgfplots and most layout packages are ignored by Pandoc. Compile
+those to SVG separately and include them with
+\verb|\includegraphics{img/figure.svg}|.
+
+\end{document}

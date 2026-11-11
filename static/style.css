@@ -1,0 +1,73 @@
+/* Minimal, dependency-free styles. Dark mode is automatic via light-dark(). */
+
+:root {
+  color-scheme: light dark;
+  --fg: light-dark(#1a1a1a, #e6e6e6);
+  --bg: light-dark(#ffffff, #121212);
+  --muted: light-dark(#666666, #9a9a9a);
+  --link: light-dark(#0b57d0, #8ab4f8);
+  --code-bg: light-dark(#f4f4f4, #1e1e1e);
+  --rule: light-dark(#dddddd, #333333);
+}
+
+html {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 18px;
+  line-height: 1.6;
+  color: var(--fg);
+  background: var(--bg);
+}
+
+body {
+  max-width: 38rem;
+  margin: 0 auto;
+  padding: 1.5rem 1rem 3rem;
+}
+
+a { color: var(--link); }
+
+header nav {
+  display: flex;
+  gap: 1.5rem;
+  padding-bottom: 1rem;
+  margin-bottom: 2rem;
+  border-bottom: 1px solid var(--rule);
+}
+header nav a:first-child { font-weight: bold; }
+
+h1, h2, h3 { line-height: 1.25; }
+h1 { font-size: 1.8rem; margin-bottom: 0.25rem; }
+
+.meta, time { color: var(--muted); }
+.abstract { font-style: italic; margin: 1rem 0; }
+
+ul li time { margin-right: 0.5rem; font-variant-numeric: tabular-nums; }
+
+img, svg { max-width: 100%; height: auto; }
+
+code, pre {
+  font-family: ui-monospace, Menlo, Consolas, monospace;
+  font-size: 0.9em;
+  background: var(--code-bg);
+}
+code { padding: 0.1em 0.3em; border-radius: 3px; }
+pre { padding: 0.75rem; overflow-x: auto; }
+pre code { padding: 0; background: none; }
+
+math { font-size: 1.05em; }
+math[display="block"] { margin: 1rem 0; overflow-x: auto; }
+
+blockquote { margin: 1rem 0; padding-left: 1rem; border-left: 3px solid var(--rule); color: var(--muted); }
+
+table { border-collapse: collapse; margin: 1rem 0; }
+th, td { padding: 0.3rem 0.6rem; border-bottom: 1px solid var(--rule); }
+
+.footnotes { font-size: 0.9em; color: var(--muted); }
+
+footer {
+  margin-top: 3rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--rule);
+  color: var(--muted);
+  font-size: 0.9em;
+}
