@@ -91,7 +91,7 @@ figure.wrap-left  { float: left;  margin-right: 1.25rem; }
 figure.pair > p { display: flex; justify-content: space-between; margin: 0; }
 /* Banner (\label{banner}): a wide strip, cropped to the same shape as the PDF. */
 figure.banner { margin: 0 0 1.5rem; }
-figure.banner img { aspect-ratio: 148 / 42; object-fit: cover; object-position: center 30%; }
+figure.banner img { aspect-ratio: 148 / 75; object-fit: cover; object-position: center 30%; }
 /* Photo frame (wrapphoto, photopair), after Wikipedia's thumbnails: light
    panel, thin border, hairline round each image, caption inside, left-aligned.
    Colours match \photoframe / \photopanel in posts/photos.sty. */

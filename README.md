@@ -97,7 +97,7 @@ the GitHub Pages subpath, and from a custom domain root without changes.
 posts/          published .tex articles
 posts/img/      images
 drafts/         not built
-home/           landing page, copied as-is to public/ (index.html, home.css)
+home/           landing page; build.sh fills the <!-- POSTS --> sidebar marker
 static/         copied as-is to public/ (style.css, favicon, CNAME)
 template.html   the one Pandoc HTML template for posts + post list (posts/index.html)
 build.sh        the whole build

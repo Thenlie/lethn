@@ -24,8 +24,9 @@ created: 2026-11-19
 id: set-site-url-in-build-sh-to-https-lethn
 title: Set SITE_URL in build.sh to https://lethn.com
 priority: 3
-status: todo
+status: done
 created: 2026-11-25
+completed: 2026-11-25
 ---
 build.sh:15 still has placeholder https://USERNAME.github.io/blog, so feed.xml links are wrong. Set once custom domain is live.
 
@@ -42,7 +43,8 @@ static/CNAME containing lethn.com, plus DNS records at registrar. Without it, de
 id: add-links-from-landing-page-to-posts-and
 title: Add links from landing page to posts and feed
 priority: 3
-status: todo
+status: done
 created: 2026-11-25
+completed: 2026-11-25
 ---
 home/index.html shows only the title; no way to reach posts/index.html or feed.xml.

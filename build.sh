@@ -11,14 +11,14 @@ cd "$(dirname "$0")"
 # Let \usepackage{photos} in a post find posts/photos.sty (Pandoc searches TEXINPUTS).
 export TEXINPUTS="posts:${TEXINPUTS:-}"
 
-SITE_TITLE="My Blog"
-SITE_URL="https://USERNAME.github.io/blog"   # no trailing slash; change once for a custom domain
+SITE_TITLE="LETHN"
+SITE_URL="https://lethn.com"   # no trailing slash
 
 # --- 1. Fresh output dir, copy static assets ---------------------------------
 rm -rf public
 mkdir -p public/posts
 cp -R static/. public/
-cp -R home/. public/        # landing page -> public/index.html
+cp home/home.css public/    # landing page; index.html is filled in at step 3
 [ -d posts/img ] && cp -R posts/img public/posts/
 
 # --- 2. Render each post, collect "date<TAB>slug<TAB>title" ------------------
@@ -54,7 +54,20 @@ done
 # Newest first. ISO dates sort correctly as plain text.
 sort -r "$list" -o "$list"
 
-# --- 3. Post list (posts/index.html; site root is the landing page in home/) -
+xml_escape() { sed -e 's/&/\&amp;/g' -e 's/</\&lt;/g' -e 's/>/\&gt;/g'; }
+
+# --- 3. Landing page: post list into the sidebar of home/index.html ----------
+# Each post becomes an <li> in place of the <!-- POSTS --> marker line.
+sidebar=$(mktemp)
+while IFS=$'\t' read -r date slug title; do
+  printf '      <li><a href="posts/%s.html">%s</a><time datetime="%s">%s</time></li>\n' \
+    "$slug" "$(printf '%s' "$title" | xml_escape)" "$date" "$date"
+done < "$list" > "$sidebar"
+awk 'NR==FNR { items = items $0 "\n"; next }
+     /<!-- POSTS -->/ { printf "%s", items; next }
+     { print }' "$sidebar" home/index.html > public/index.html
+
+# --- 4. Post list (posts/index.html) -----------------------------------------
 index=$(mktemp)
 while IFS=$'\t' read -r date slug title; do
   printf -- '- <time datetime="%s">%s</time> [%s](%s.html)\n' "$date" "$date" "$title" "$slug"
@@ -65,8 +78,7 @@ pandoc "$index" -f markdown -s \
   -M title="$SITE_TITLE" -V root=../ -V sitetitle="$SITE_TITLE" -V is_index=true \
   -o public/posts/index.html
 
-# --- 4. Atom feed ------------------------------------------------------------
-xml_escape() { sed -e 's/&/\&amp;/g' -e 's/</\&lt;/g' -e 's/>/\&gt;/g'; }
+# --- 5. Atom feed ------------------------------------------------------------
 newest=$(head -1 "$list" | cut -f1)
 {
   printf '<?xml version="1.0" encoding="utf-8"?>\n'
@@ -88,5 +100,18 @@ newest=$(head -1 "$list" | cut -f1)
   printf '</feed>\n'
 } > public/feed.xml
 
+# --- 6. Feed page (feed.html) ------------------------------------------------
+# Browsers show raw Atom as an XML tree, so the nav links here instead.
+pandoc -f markdown -s \
+  --template=template.html \
+  -M title="Feed" -V root= -V sitetitle="$SITE_TITLE" \
+  -o public/feed.html <<EOF
+Subscribe in a feed reader with this address:
+
+\`$SITE_URL/feed.xml\`
+
+[View the raw feed](feed.xml).
+EOF
+
 echo "Built $(wc -l < "$list" | tr -d ' ') post(s) -> public/"
-rm -f "$list" "$index"
+rm -f "$list" "$index" "$sidebar"
