@@ -71,3 +71,47 @@ footer {
   color: var(--muted);
   font-size: 0.9em;
 }
+
+/* Figures. Pandoc emits <figure><img><figcaption>. */
+figure { margin: 1.5rem 0; }
+figure img { display: block; width: 100%; }
+figcaption {
+  margin-top: 0.4rem;
+  font-size: 0.85em;
+  font-style: italic;
+  line-height: 1.4;
+  color: var(--muted);
+}
+
+/* Wrapped figures (wrapfig.lua): text flows around them. */
+figure.wrap { width: 54%; margin: 0.3rem 0 0.75rem; }
+figure.wrap-right { float: right; margin-left: 1.25rem; }
+figure.wrap-left  { float: left;  margin-right: 1.25rem; }
+/* Side-by-side photos (\label{pair}); each img carries its own inline width. */
+figure.pair > p { display: flex; justify-content: space-between; margin: 0; }
+/* Banner (\label{banner}): a wide strip, cropped to the same shape as the PDF. */
+figure.banner { margin: 0 0 1.5rem; }
+figure.banner img { aspect-ratio: 148 / 42; object-fit: cover; object-position: center 30%; }
+/* Photo frame (wrapphoto, photopair), after Wikipedia's thumbnails: light
+   panel, thin border, hairline round each image, caption inside, left-aligned.
+   Colours match \photoframe / \photopanel in posts/photos.sty. */
+figure.wrap, figure.pair {
+  --photo-frame: light-dark(#c8ccd1, #3a3d42);
+  --photo-panel: light-dark(#f8f9fa, #1b1c1e);
+  box-sizing: border-box;
+  padding: 3px;
+  border: 1px solid var(--photo-frame);
+  background: var(--photo-panel);
+}
+figure.wrap img, figure.pair img {
+  box-sizing: border-box;
+  border: 1px solid var(--photo-frame);
+}
+figure.wrap figcaption, figure.pair figcaption {
+  margin-top: 0.3rem;
+  padding: 0 0.25rem 0.15rem;
+  text-align: left;
+}h2, h3, footer { clear: both; }
+@media (max-width: 600px) {
+  figure.wrap { float: none; width: 100%; margin: 1.5rem 0; }
+}

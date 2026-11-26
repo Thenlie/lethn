@@ -1,2 +1,12 @@
 public/
 .DS_Store
+# TeX build artifacts (PDF previews compiled locally)
+*.pdf
+*.aux
+*.log
+*.out
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+*.xdv
+*.toc

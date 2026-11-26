@@ -1,0 +1,15 @@
+/* Landing page styles. Separate from style.css (blog) so the home UI can grow on its own. */
+
+:root {
+  color-scheme: light dark;
+  --fg: light-dark(#1a1a1a, #e6e6e6);
+  --bg: light-dark(#ffffff, #121212);
+}
+
+html {
+  font-family: Georgia, "Times New Roman", serif;
+  color: var(--fg);
+  background: var(--bg);
+}
+
+body { margin: 0; }

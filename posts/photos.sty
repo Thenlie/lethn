@@ -1,0 +1,139 @@
+% photos.sty: photo layouts shared by all posts.
+%
+%   \usepackage{photos}   % load after caption, so the post's caption options win
+%
+% Environments:
+%   wrapphoto[width]{l|r}   framed photo the text flows around
+%   photopair               framed row of photos sharing one caption
+%   banner                  full-bleed strip across the top of page 1 (no frame)
+%
+% Every environment is defined twice. The plain \newenvironment versions are
+% what Pandoc sees: an ordinary figure whose \label names the layout
+% (wrapfig.lua turns that into a CSS class; static/style.css draws the frame).
+% The real LaTeX versions are swapped in by \AtBeginDocument, which Pandoc
+% drops. Keep the Pandoc versions free of PDF-only commands.
+%
+% Pandoc finds this file through TEXINPUTS (set in build.sh). LaTeX finds it
+% the same way it finds img/: compile from posts/, or put posts/ on TEXINPUTS.
+
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{photos}[2026/11/20 Photo layouts for the blog]
+% LaTeX already treats @ as a letter in .sty files; Pandoc doesn't, and stops
+% parsing at the first \photo@ name without this.
+\makeatletter
+
+\RequirePackage{graphicx}
+\RequirePackage{xcolor}
+\RequirePackage{caption}
+\RequirePackage{wrapfig}
+\RequirePackage{float}      % [H] for posts that pin a plain figure
+\RequirePackage{needspace}
+\RequirePackage{eso-pic}
+\RequirePackage{trimclip}
+
+% ---------------------------------------------------------------------------
+% Settings a post may change after \usepackage{photos}
+% ---------------------------------------------------------------------------
+% Frame, after Wikipedia's thumbnails: light panel, thin border, a little
+% padding, and a hairline around each image. Caption sits inside, left-aligned.
+\definecolor{photoframe}{HTML}{C8CCD1}
+\definecolor{photopanel}{HTML}{F8F9FA}
+\newlength{\photopad}\setlength{\photopad}{3pt}
+\newlength{\photorule}\setlength{\photorule}{0.4pt}
+
+% Banner: strip height, and which part of the photo survives the crop:
+% 0 = keep the top, 0.5 = centre, 1 = keep the bottom. Mirror it in
+% object-position for figure.banner in static/style.css.
+\newlength{\bannerheight}\setlength{\bannerheight}{42mm}
+\newcommand{\bannerfocus}{0.5}
+
+% ---------------------------------------------------------------------------
+% What Pandoc sees
+% ---------------------------------------------------------------------------
+\newenvironment{wrapphoto}[2][0.46]{\begin{figure}\label{wrap-#2}\centering}{\end{figure}}
+\newenvironment{photopair}{\begin{figure}\label{pair}\centering}{\end{figure}}
+\newenvironment{banner}{\begin{figure}\label{banner}}{\end{figure}}
+
+% ---------------------------------------------------------------------------
+% The frame (PDF)
+% ---------------------------------------------------------------------------
+% \photo@framebegin{outer width} ... \photo@frameend collects the body into a
+% box: images get a hairline border, the caption is set ragged-right inside.
+% The finished frame is left in \photo@box, so callers can measure it.
+\newsavebox\photo@box
+\newsavebox\photo@inner
+\newlength\photo@outer
+\newcommand\photo@framebegin[1]{%
+  \setlength\photo@outer{#1}%
+  \begin{lrbox}{\photo@inner}%
+  \begin{minipage}{\dimexpr\photo@outer-2\photopad-2\photorule\relax}%
+    \def\@captype{figure}%
+    \captionsetup{justification=raggedright,singlelinecheck=false}%
+    \let\photo@includegraphics\includegraphics
+    \renewcommand\includegraphics[2][]{%
+      {\setlength\fboxsep{0pt}\setlength\fboxrule{\photorule}%
+       \fcolorbox{photoframe}{photopanel}{\photo@includegraphics[##1]{##2}}}}%
+    % An image at full width plus its hairline would overhang by 2\photorule.
+    \advance\linewidth by -2\photorule
+    \centering}
+\newcommand\photo@frameend{%
+  \end{minipage}%
+  \end{lrbox}%
+  \sbox\photo@box{%
+    \setlength\fboxsep{\photopad}\setlength\fboxrule{\photorule}%
+    \fcolorbox{photoframe}{photopanel}{\usebox\photo@inner}}}
+
+% ---------------------------------------------------------------------------
+% The real environments (PDF)
+% ---------------------------------------------------------------------------
+\AtBeginDocument{%
+  % wrapphoto: the framed box is built first so \Needspace can ask for its
+  % exact height (plus wrapfig's \intextsep padding) before the wrap starts.
+  % Use \Needspace, not \needspace: the lowercase one is a rubber
+  % approximation that rewards a page break and ends pages early. Put the
+  % environment right before the paragraph it wraps, with no blank line
+  % after it. \wrapfigure/\endwrapfigure are called directly: nesting
+  % \begin{wrapfigure} inside another environment resets \everypar and kills
+  % the wrap.
+  \renewenvironment{wrapphoto}[2][0.46]{%
+    \def\photo@side{#2}\def\photo@width{#1\linewidth}%
+    \photo@framebegin{\photo@width}}
+   {\photo@frameend
+    \Needspace{\dimexpr\ht\photo@box+\dp\photo@box+2\intextsep\relax}%
+    \wrapfigure{\photo@side}{\photo@width}\usebox\photo@box\endwrapfigure}%
+  %
+  % photopair: photos side by side (give each a width, e.g. 0.49\linewidth,
+  % with \hfill between), one frame and one caption around the lot.
+  % Placement [!htb]: stays put when it fits, else moves to the next page
+  % top while text fills the gap. ([H] left half-empty pages.)
+  \renewenvironment{photopair}{%
+    \begin{figure}[!htb]\centering\photo@framebegin{\linewidth}}
+   {\photo@frameend\usebox\photo@box\end{figure}}%
+  %
+  % banner: put it right before \maketitle, holding one \includegraphics.
+  % The photo is scaled to the paper width, cropped to \bannerheight around
+  % \bannerfocus, and pinned to the top edge with eso-pic. The title drops
+  % down to clear it (needs titling's \droptitle; otherwise a plain gap).
+  % Box and drop are set globally: the shipout hook runs after this
+  % environment's group has closed.
+  \renewenvironment{banner}{%
+    \let\photo@includegraphics\includegraphics
+    \renewcommand\includegraphics[2][]{%
+      \sbox\photo@inner{\photo@includegraphics[width=\paperwidth]{##2}}%
+      \setlength\photo@cropbottom{\dimexpr\ht\photo@inner-\bannerheight\relax}%
+      \setlength\photo@croptop{\bannerfocus\photo@cropbottom}%
+      \addtolength\photo@cropbottom{-\photo@croptop}%
+      \clipbox{0pt \photo@cropbottom{} 0pt \photo@croptop}{\usebox\photo@inner}}%
+    \begin{lrbox}{\photo@box}}
+   {\end{lrbox}%
+    \global\setbox\photo@banner\box\photo@box
+    \AddToShipoutPictureBG*{\AtPageUpperLeft{\raisebox{-\height}{\usebox\photo@banner}}}%
+    \@ifundefined{droptitle}%
+      {\vspace*{\dimexpr\bannerheight-\topmargin-1in-\headheight-\headsep\relax}}%
+      {\global\advance\droptitle\dimexpr\bannerheight-\topmargin-1in-\headheight-\headsep\relax}}%
+}
+\newsavebox\photo@banner
+\newlength\photo@croptop
+\newlength\photo@cropbottom
+
+\endinput

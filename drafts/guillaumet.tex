@@ -1,0 +1,333 @@
+% Guillaumet trip report.
+%
+% Two targets from one source:
+%   - PDF:  pdflatex guillaumet.tex   (everything in the preamble applies)
+%   - Blog: ./build.sh                (Pandoc reads \title/\date and the body;
+%                                      it ignores the typography packages, so
+%                                      the HTML falls back to the site stylesheet)
+%
+% Keep body markup to what Pandoc understands: \section, \emph, \textbf,
+% itemize, tabular, \footnote, \href. Don't \renewcommand anything used in the
+% body; Pandoc expands user macros and the expansion leaks into the HTML.
+
+\documentclass[11pt]{article}
+
+% ---------------------------------------------------------------------------
+% Page, type, spacing (PDF only)
+% ---------------------------------------------------------------------------
+\usepackage[a5paper,margin=18mm,top=22mm,bottom=24mm]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[osf]{libertine}     % Linux Libertine, old-style figures
+\usepackage{microtype}
+\usepackage{setspace}
+\setstretch{1.12}
+\usepackage{parskip}
+\setlength{\parskip}{0.55\baselineskip}
+
+\usepackage{xcolor}
+\definecolor{granite}{HTML}{3B3F45}
+\definecolor{glacier}{HTML}{4A7B9D}
+\definecolor{rule}{HTML}{B8BEC6}
+
+\usepackage{titlesec}
+% Title and rule in one unbreakable box, so a page break cannot split them.
+\newcommand{\ruledtitle}[1]{\parbox[t]{\linewidth}{#1\par\vspace{2pt}{\color{rule}\hrule height 0.4pt}}}
+\titleformat{\section}
+  {\color{granite}\normalfont\Large\itshape}
+  {}{0pt}{\ruledtitle}
+\titlespacing*{\section}{0pt}{1.6\baselineskip}{0.6\baselineskip}
+
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage[font={small,it},labelformat=empty,skip=5pt]{caption}
+\setlength{\textfloatsep}{1.2\baselineskip}
+\setlength{\intextsep}{1.2\baselineskip}
+
+% Photo layouts (wrapphoto, photopair, banner) live in posts/photos.sty.
+\usepackage{photos}
+\setlength{\bannerheight}{75mm}
+\renewcommand{\bannerfocus}{0.3}
+\usepackage{array}
+\usepackage{lettrine}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\fancyfoot[C]{\small\color{granite}\thepage}
+\fancyhead[R]{\small\color{granite}\itshape Guillaumet}
+
+\usepackage[hidelinks]{hyperref}
+\hypersetup{pdftitle={Guillaumet},pdfsubject={Patagonia trip report}}
+
+% ---------------------------------------------------------------------------
+% Title block (PDF only; Pandoc ignores titling hooks and uses \title/\date)
+% ---------------------------------------------------------------------------
+\usepackage{titling}
+\setlength{\droptitle}{-1.5\baselineskip}
+\pretitle{\begin{center}
+  {\color{glacier}\footnotesize\scshape patagonia\par}
+ \vspace{0.6\baselineskip}
+  \color{granite}\Huge\itshape}
+\posttitle{\par\vspace{0.5\baselineskip}
+  {\color{granite}\small Aguja Guillaumet, 2580\,m \textperiodcentered{} Fitz Roy massif\par}
+  \end{center}}
+\preauthor{}\postauthor{}
+\predate{\vspace{-0.6\baselineskip}\begin{center}\color{granite}\small}
+\postdate{\par
+  \vspace{0.3\baselineskip}
+  {\color{rule}\rule{0.35\linewidth}{0.4pt}\par}
+  \end{center}\vspace{0.5\baselineskip}}
+
+\title{Guillaumet}
+\author{}
+\date{January 2nd - 3rd, 2026}
+
+% ---------------------------------------------------------------------------
+\begin{document}
+\begin{banner}
+  \includegraphics[width=\linewidth]{img/guillaumet/banner.jpeg}
+\end{banner}
+\maketitle
+
+\lettrine[lines=3,findent=2pt,nindent=0pt]{T}{he main goal} of my trip to
+Patagonia was to climb Guillaumet, a small peak on the far north side of the
+Fitz Roy massif with an elevation of 2580 meters. This would be my first real
+alpine climb and the first time I worked with a climbing guide.
+
+\section{Planning}
+
+The planning started a few months earlier in the US. After finding a guiding
+company that took clients up Guillaumet, I reached out and explained my
+climbing experience. They sounded confident that I had enough experience and
+agreed to take me on as a client. I really wanted to do this climb with a
+friend, but not having a partner who could take the time off to make it down to
+Argentina forced my hand, and I was happy to take on this challenge with
+someone very experienced in this type of terrain.
+
+Packing went smoothly. I only needed to purchase a new pair of winter boots,
+since my ice climbing boots were a bit too stiff to comfortably walk in for a
+substantial amount of time. I had the rest of the gear, including stuff for
+winter camping, rock climbing and ice climbing. I started to work on my cardio
+a bit more and got out on the snow a few times to try and get a bit more
+comfortable on that type of terrain. Ideally I would have done a little more
+training with a heavy pack, but this was something I only realized later.
+Feeling as ready as I could be, I left the US for Argentina.
+
+\section{El Chalt\'en}
+
+Shortly after arriving in El Chalt\'en, I met with my guide Ramiro. He seemed
+like a cool guy and we wasted no time starting to plan our climb. The first day
+I arrived was the start of a great weather window. We considered leaving for
+the mountains the very next day, but due to my jet lag and an optimistic
+forecast for the next week, we decided to hold off for a few days. This would
+give us some time to climb together around town and get to know each other
+better. It would also give him a bit more confidence that I truly knew what I
+was doing.
+
+The following day we walked about 5 minutes outside of town to the local
+crag. We climbed up a fun 5-pitch sport route that went through a large roof.
+We then rappelled down and walked a few minutes to another route, which we did
+in 3 pitches. The skies were perfectly clear and I had my best views of the
+Fitz Roy massif so far. Stunning! After the second climb we hiked down the
+back side of the crag and parted ways, planning to start our hike into the
+mountains in two days.
+
+I spent the next day packing, getting food and generally resting. I was
+feeling really good and psyched to start the main objective.
+
+\section{The approach}
+
+\begin{wrapphoto}{l}
+  \includegraphics[width=\linewidth]{img/guillaumet/approach_1.jpg}
+  \caption{Following the Rio Electrico toward Piedra del Fraile.}
+\end{wrapphoto}
+The following day, January 2nd, we met around 10:30\,am to drive over to the
+Electrico valley and start our hike in. We were still a bit unsure of the
+weather forecast. High winds were forecast for the following morning, which
+was nerve-racking. We considered changing plans to climb Aguja de l'S, but
+ultimately decided to go for the original objective. This turned out to be the
+correct decision. After a quick gear check we made the short drive and started
+hiking in. It was all finally happening!
+
+The hike starts by following Rio Electrico for a few miles before reaching
+Piedra del Fraile. This is a magical little campground with a nice host
+family. After stopping here for a short rest we continued on. From there the
+hike got much more strenuous. It gains almost 3500\,ft of elevation over about
+2 miles. With heavy packs this felt tough, but we moved consistently and
+eventually reached our camp for the night, Piedra Negra. This took about 4
+hours in total.
+
+\begin{photopair}
+  \includegraphics[width=0.49\linewidth]{img/guillaumet/approach_2.jpg}\hfill
+  \includegraphics[width=0.49\linewidth]{img/guillaumet/approach_3.jpg}
+  \caption{Lupines and the refugio at Piedra del Fraile. The grind up to Piedra Negra, the north end of the massif coming into view.}
+\end{photopair}
+
+\begin{wrapphoto}{r}
+  \includegraphics[width=\linewidth]{img/guillaumet/approach_4.jpg}
+  \caption{Camp at Piedra Negra, tucked behind a wind wall. Guillaumet in the background.}
+\end{wrapphoto}
+After arriving at camp we set up the tent, got water, and settled in for the
+night. We were able to get updated weather forecasts from Piedra del Fraile
+via radio, as well as an inReach message from Ramiro's girlfriend. Despite the
+wind when we arrived at camp, the forecast looked good and the wind
+consistently died down through the night. We had some dehydrated meals and an
+empanada for dinner, along with some chicken broth to drink. Temperatures were
+quite comfortable, though I am not sure of the exact numbers.
+
+\section{Summit day}
+
+At 3:30\,am the alarm went off. We boiled some water for instant coffee and
+put on our boots and jackets. By 4\,am we had started the hike to the base of
+the route. The hike involved 45 to 60 minutes of easy talus hiking. After this
+we arrived at a snowfield and put crampons on. From here there was about an
+hour of moderate snow, with a small section of steep snow. All of this was
+done un-roped and felt pretty comfortable. I was surprised at how good I felt
+physically after the hike the previous day and limited sleep. I did not feel
+sore at all and was really psyched! Pretty minimal nerves, which was also
+surprising. After roughly 2 hours of hiking, we arrived at the base of the
+route.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\linewidth]{img/guillaumet/climb_1.jpg}
+  \caption{Alpenglow from the base of the route, looking back down the approach.}
+\end{figure}
+
+We took 30 minutes or so to transition to rock climbing gear. Crampons and
+boots in our packs, harnesses and climbing shoes on, and ropes flaked. By this
+point it was quite bright, so we also stowed our headlamps and enjoyed the
+last of the alpenglow as the sun was rising. And then Ramiro was off leading
+the first pitch.
+
+The first several pitches were quite moderate. I was delighted to find the
+climbing really similar to Little Cottonwood Canyon: pristine white granite
+with lots of splitter cracks for gear and jams. I felt really comfortable on
+the terrain and climbed quickly. The only slowdown on this portion of the
+climb was when Ramiro dislodged a rock in a chimney and core-shot one of the
+ropes. I didn't know it at the time from my belay stance, but he had to cut 4
+to 5 feet off the end of the rope. When I got to the same spot I opted to
+climb the slab on the outside of the chimney to avoid a similar issue. After 5
+or so pitches we reached the crux of the route, a 5.10 splitter in a corner!
+
+The crux was probably the best part of the route. While it was strenuous, the
+jams were great and I made short work of it without falling. The crack
+consisted of many sizes, from 0.3 to 3, fortunately nothing too big. After the
+crux we were roughly halfway done with the climbing. An airy traverse pitch
+was the next highlight, moving across a juggy flake with smears for feet. It
+felt quite easy, but was cool to have some exposure way up in the alpine.
+
+% Mixed portrait + landscape row: widths chosen so heights match
+% (0.353 * 4/3 = 0.627 * 3/4).
+\begin{photopair}
+  \includegraphics[width=0.353\linewidth]{img/guillaumet/climb_2.jpg}\hfill
+  \includegraphics[width=0.627\linewidth]{img/guillaumet/climb_3.jpg}
+  \caption{Several pitches up the route, Lago Electrico and the Marconi glacier far below. Pristine white granite, with the summit snowfield above.}
+\end{photopair}
+
+After 4 to 5 more pitches we arrived at the base of the summit snowfield. We
+switched back to boots and crampons before short-roping up this final pitch to
+the summit. My ego wasn't thrilled with being short-roped up this fairly
+moderate snowfield, but not unexpected on a guided climb. At 10:30\,am we
+arrived at the summit!
+
+\begin{photopair}
+  \includegraphics[width=0.49\linewidth]{img/guillaumet/summit_1.jpg}\hfill
+  \includegraphics[width=0.49\linewidth]{img/guillaumet/summit_2.jpg}
+  \caption{Summit selfie with Ramiro. Taking a break among the summit blocks, the ice cap behind.}
+\end{photopair}
+
+\section{Descent}
+
+After hanging out on the summit for a while, taking photos, eating snacks, and
+chatting with an American couple who was also on the summit, we started the
+descent.
+
+The first part consisted of walking down the summit snow slope, back to the end
+of the rock section. Again, I was short-roped down this section before arriving
+at the first of 5 rappels. The raps consisted of 3 fairly straight forward rock
+rappels to get back to the top of Amy's couloir. Then two more rappels down the
+couloir itself. The first section was pretty standard and similar to a lof of
+descents I have done in the past. The only difference was how much it traversed.
+This made for some interesting rope pulls but fortunately nothing got snagged
+and we were quickly at the top of Amy's.
+
+\begin{photopair}
+  \includegraphics[width=0.49\linewidth]{img/guillaumet/descent_1.jpeg}\hfill
+  \includegraphics[width=0.49\linewidth]{img/guillaumet/descent_3.jpeg}
+  \caption{Tat and rings at two of the rock rappel anchors.}
+\end{photopair}
+
+The second section of rappels was quite intimidating for me. We first went down
+the narrow top section of the couloir which was starting to melt out
+significantly. This made for a lot of rock fall, and since I was going down
+second, I had to be very careful to not kick anything down on Ramiro. The second
+rappel in this section was initially much less scary since the couloir had
+opened up, though rockfall was still a serious concern. However at the bottom of
+this rappel there was a large bergshrund. This looked almost un-passable to me,
+but Ramiro calmly explained that we would be rappeling into the shrund and then
+climbing out the other side. This ended up being a really cool experience, but
+quite scary at the time since I had never been that close to a crevasse.
+
+\begin{photopair}
+  \includegraphics[width=0.49\linewidth]{img/guillaumet/descent_2.jpeg}\hfill
+  \includegraphics[width=0.49\linewidth]{img/guillaumet/descent_4.jpeg}
+  \caption{Looking up the shooting gallery. Looking into the bergschrund at the bottom of the couloir.}
+\end{photopair}
+
+\begin{wrapphoto}{r}
+  \includegraphics[width=\linewidth]{img/guillaumet/descent_5.jpeg}
+  \caption{Looking up at the Brenner route from Paso Guillaumet.}
+\end{wrapphoto}
+Eventually, we made it out of the bergshrund and back on to moderate snow
+slopes. We quickly moved down these and ended up at Paso Guillaumet. We took a
+short break here to dry out, and look for our camp mates that were climbing the
+Brenner route. We spotted them up on the crux pitch and it looked like they
+were starting to bail, a smart decision at that time in the day. We then headed
+back towards camp, hiking down skiers right of our approach trail. This hike
+was uneventful, except for the relatively large point-release avalanche we saw
+that completely wiped out our approach trail! Yikes. Finally, around 2pm, we
+made it back to our tent.
+
+Back at camp we re-filled water and sat around for a bit, letting our socks and
+boots dry pout in the sun. Ramiro offered to stay at camp for another night to
+rest and hike out the next day, but since it was only early afternoon, I decided
+we may as well just head down now. A hot meal in El Chalten sounded much better
+than another dehydrated meal. So after about an hour, we broke down camp and
+re-packed our bags, ready to hike back to town.
+
+\begin{wrapphoto}{l}
+  \includegraphics[width=\linewidth]{img/guillaumet/descent_6.jpeg}
+  \caption{French fries with cheese, green onion and pancetta.}
+\end{wrapphoto}
+We made quick work of the descent, all thanks to Ramiro. It was all I could do
+to keep pace with him without burning out. Going down the first half was
+significantly easier. The long, grinding uphill became a quad burning downhill,
+but gravity made my pack feel lighter. Soon we were back at Piedra del Fraille
+and we stopped to chat with the owners, and I got a piece of almond cake and a
+coke. Although it was a little dry, it was absolutely delicious. After that
+digested we continued the walk out. This part was much harder than I remember.
+The fatigue was starting to catch up to me and since the trail was completely
+flat, it was just as much of an effort as it was coming in. Despite the fatigue,
+I was still buzzing with excitement from the climb, and the fact I was in such a
+beautiful place. After a few hours we were back close to Rio Electrico and
+eventually the car. After the quick drive back to town I found a nearby
+restaurant. I ordered some french fires with cheese, green onion and pancetta,
+and of course a beer to wash it down. A hearty way to end a hearty trip.
+
+\section{Final Thoughts}
+
+Without any doubt, this was the coolest climbing experience of my life.
+Unsurprisingly, Patagonia delivered exactly what I have always heard. The most
+striking ridge line in the world, pristine white granite with genuinely good
+climbing, and a full value alpine experience (though I didn't experience too
+much of the famous wind, thankfully). Despite some of my internal conflicts with
+hiring a guide, Ramiro was an awesome partner, a great professional guide, and
+someone I genuinely hope to rope up with again. While I wish I could have
+tackled an objective like this with a friend or solo, I am very glad I went for
+it anyways and swallowed my pride with a guide, it almost certainly wouldn't
+have happened without that decision. And now there is a great goal to strive for
+on my next trip!
+
+\end{document}
